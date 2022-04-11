@@ -1,6 +1,7 @@
 package com.example.EmployeeDemo.ControllerTests;
 
 import com.example.EmployeeDemo.controller.EmployeeController;
+import com.example.EmployeeDemo.model.Employee;
 import com.example.EmployeeDemo.service.EmployeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -42,6 +44,15 @@ public class EmployeeControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.get("/employees/1")
                 .contentType(MediaType.APPLICATION_JSON));
         verify(employeeService, times(1)).getEmployeeById(1l);
+    }
+
+    @Test
+    public void addNewEmployeeTest() throws Exception{
+        Employee employee1 = new Employee("John", "Smith", "john_smith123@test.com");
+        mockMvc.perform(MockMvcRequestBuilders.post("/addEmployee")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(employee1)));
+        verify(employeeService, times(1)).saveEmployee(any(Employee.class));
     }
 
 }
