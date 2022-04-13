@@ -55,4 +55,11 @@ public class EmployeeControllerTests {
         verify(employeeService, times(1)).saveEmployee(any(Employee.class));
     }
 
+    @Test
+    public void deleteEmployeeTest() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.delete("/delete/1")
+            .contentType(MediaType.APPLICATION_JSON));
+        verify(employeeService, times(1)).deleteEmployee(1L);
+    }
+
 }
