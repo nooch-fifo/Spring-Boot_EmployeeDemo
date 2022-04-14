@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -53,6 +54,20 @@ public class EmployeeControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee1)));
         verify(employeeService, times(1)).saveEmployee(any(Employee.class));
+    }
+
+    @Test
+    public void updateEmployeeTest() throws Exception {
+        Employee updatedEmployee = new Employee("Jane", "Doe", "TBA");
+        System.out.println(updatedEmployee.getEmail());
+        updatedEmployee.setEmail("newEmail@test.com");
+        mockMvc.perform((MockMvcRequestBuilders.put("/updateEmployee")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(updatedEmployee))));
+        verify(employeeService, times(1)).updateEmployee(any(Employee.class));
+
+        // added console logs to confirm if Email is being updated
+        System.out.println(updatedEmployee.getEmail());
     }
 
     @Test
